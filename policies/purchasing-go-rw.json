@@ -1,0 +1,39 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListPrivateBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::purchasing-go-documents"]
+    },
+    {
+      "Sid": "ListPublicBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::purchasing-go-public-documents"]
+    },
+    {
+      "Sid": "ObjectRWPrivate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:GetObjectAttributes"
+      ],
+      "Resource": ["arn:aws:s3:::purchasing-go-documents/*"]
+    },
+    {
+      "Sid": "ObjectRWPublic",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:GetObjectAttributes"
+      ],
+      "Resource": ["arn:aws:s3:::purchasing-go-public-documents/*"]
+    }
+  ]
+}
