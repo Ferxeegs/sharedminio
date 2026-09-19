@@ -5,6 +5,8 @@ ENDPOINT="${MINIO_ENDPOINT:-http://minio:9000}"
 ALIAS="local"
 PURCHASING_PRIVATE_BUCKET="purchasing-go-documents"
 PURCHASING_PUBLIC_BUCKET="purchasing-go-public-documents"
+SIPERBOOK_PRIVATE_BUCKET="siperbook-documents"
+SIPERBOOK_PUBLIC_BUCKET="siperbook-public-documents"
 
 echo "Waiting for MinIO at ${ENDPOINT} ..."
 i=0
@@ -54,6 +56,20 @@ create_app_user \
   "${PURCHASING_GO_SECRET_KEY}" \
   "purchasing-go-rw" \
   "/policies/purchasing-go-rw.json"
+
+echo "Creating siperbook buckets ..."
+mc mb --ignore-existing "${ALIAS}/${SIPERBOOK_PRIVATE_BUCKET}"
+mc mb --ignore-existing "${ALIAS}/${SIPERBOOK_PUBLIC_BUCKET}"
+
+echo "Applying anonymous public-read on ${SIPERBOOK_PUBLIC_BUCKET} ..."
+mc anonymous set download "${ALIAS}/${SIPERBOOK_PUBLIC_BUCKET}" || true
+
+echo "Creating siperbook application user ..."
+create_app_user \
+  "${SIPERBOOK_ACCESS_KEY}" \
+  "${SIPERBOOK_SECRET_KEY}" \
+  "siperbook-rw" \
+  "/policies/siperbook-rw.json"
 
 echo "Init complete."
 mc ls "${ALIAS}"

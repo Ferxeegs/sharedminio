@@ -34,12 +34,25 @@ echo "2) Upload / HEAD / delete with purchasing-go credentials"
 docker run --rm --network app-bridge \
   --entrypoint /bin/sh \
   -v "${TMP_FILE}:/tmp/smoke.txt:ro" \
-  minio/mc:RELEASE.2025-04-16T18-13-26Z \
+  quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z \
   -c "
     mc alias set local http://minio:9000 '${PURCHASING_GO_ACCESS_KEY}' '${PURCHASING_GO_SECRET_KEY}' &&
     mc cp /tmp/smoke.txt 'local/${BUCKET}/${OBJECT_KEY}' &&
     mc stat 'local/${BUCKET}/${OBJECT_KEY}' &&
     mc rm 'local/${BUCKET}/${OBJECT_KEY}'
+  "
+
+echo "3) Upload / HEAD / delete with siperbook credentials"
+SIPERBOOK_BUCKET="siperbook-documents"
+docker run --rm --network app-bridge \
+  --entrypoint /bin/sh \
+  -v "${TMP_FILE}:/tmp/smoke.txt:ro" \
+  quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z \
+  -c "
+    mc alias set local http://minio:9000 '${SIPERBOOK_ACCESS_KEY}' '${SIPERBOOK_SECRET_KEY}' &&
+    mc cp /tmp/smoke.txt 'local/${SIPERBOOK_BUCKET}/${OBJECT_KEY}' &&
+    mc stat 'local/${SIPERBOOK_BUCKET}/${OBJECT_KEY}' &&
+    mc rm 'local/${SIPERBOOK_BUCKET}/${OBJECT_KEY}'
   "
 
 echo "Smoke test passed."
