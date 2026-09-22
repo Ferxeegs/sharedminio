@@ -2,7 +2,7 @@
 
 ## 1. Ringkasan
 
-Shared MinIO adalah object storage S3-compatible single-node berbasis Docker Compose. Aplikasi **purchasing-go** dan **siperbook** mengakses API MinIO secara langsung. Prometheus dan Grafana menyediakan observability. Tidak ada Nginx di stack ini.
+Shared MinIO adalah object storage S3-compatible single-node berbasis Docker Compose. Aplikasi **purchasing-go**, **siperbook**, dan **dpupk-skp** mengakses API MinIO secara langsung. Prometheus dan Grafana menyediakan observability. Tidak ada Nginx di stack ini.
 
 ## 2. Context Diagram
 
@@ -10,10 +10,13 @@ Shared MinIO adalah object storage S3-compatible single-node berbasis Docker Com
 flowchart LR
     U[Pengguna] --> APP1[purchasing-go]
     U --> APP2[siperbook]
+    U --> APP3[dpupk-skp]
     APP1 --> DB1[(Database)]
     APP2 --> DB2[(Database)]
+    APP3 --> DB3[(Database)]
     APP1 -->|S3 API| MI[MinIO :9000]
     APP2 -->|S3 API| MI
+    APP3 -->|S3 API| MI
     MI --> DATA[/Persistent Storage/]
     MI --> PROM[Prometheus]
     PROM --> GRAF[Grafana]
@@ -26,7 +29,7 @@ Semua service berada di Docker network eksternal `app-bridge` (sama dengan proje
 
 | Port host | Service | Catatan |
 |---|---|---|
-| `MINIO_API_PORT` (default 9000) | S3 API | Dipakai purchasing-go & siperbook |
+| `MINIO_API_PORT` (default 9000) | S3 API | Dipakai purchasing-go, siperbook, dpupk-skp |
 | `MINIO_CONSOLE_PORT` (default 9001) | Console | Admin / VPN only |
 | `GRAFANA_PORT` (default 3030) | Grafana | Monitoring UI |
 
@@ -45,6 +48,7 @@ Port MinIO tidak boleh diekspos ke internet publik tanpa kontrol akses.
 |---|---|---|---|
 | purchasing-go | `purchasing-go-documents` | `purchasing-go-public-documents` | `PURCHASING_GO_*` |
 | siperbook | `siperbook-documents` | `siperbook-public-documents` | `SIPERBOOK_*` |
+| dpupk-skp | `skp-documents` | `skp-public-documents` | `SKP_*` |
 
 ## 6. Retention Monitoring
 

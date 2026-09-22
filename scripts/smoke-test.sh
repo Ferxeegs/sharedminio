@@ -55,4 +55,17 @@ docker run --rm --network app-bridge \
     mc rm 'local/${SIPERBOOK_BUCKET}/${OBJECT_KEY}'
   "
 
+echo "4) Upload / HEAD / delete with dpupk-skp credentials"
+SKP_BUCKET="skp-documents"
+docker run --rm --network app-bridge \
+  --entrypoint /bin/sh \
+  -v "${TMP_FILE}:/tmp/smoke.txt:ro" \
+  quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z \
+  -c "
+    mc alias set local http://minio:9000 '${SKP_ACCESS_KEY}' '${SKP_SECRET_KEY}' &&
+    mc cp /tmp/smoke.txt 'local/${SKP_BUCKET}/${OBJECT_KEY}' &&
+    mc stat 'local/${SKP_BUCKET}/${OBJECT_KEY}' &&
+    mc rm 'local/${SKP_BUCKET}/${OBJECT_KEY}'
+  "
+
 echo "Smoke test passed."

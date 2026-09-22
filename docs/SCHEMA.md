@@ -16,6 +16,13 @@ siperbook-documents              # privat
 siperbook-public-documents       # publik (anonymous download)
 ```
 
+### dpupk-skp
+
+```text
+skp-documents                    # privat
+skp-public-documents             # publik (anonymous download)
+```
+
 ## 2. Struktur Object Key
 
 Pola umum:

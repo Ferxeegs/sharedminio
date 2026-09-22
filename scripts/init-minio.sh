@@ -7,6 +7,8 @@ PURCHASING_PRIVATE_BUCKET="purchasing-go-documents"
 PURCHASING_PUBLIC_BUCKET="purchasing-go-public-documents"
 SIPERBOOK_PRIVATE_BUCKET="siperbook-documents"
 SIPERBOOK_PUBLIC_BUCKET="siperbook-public-documents"
+SKP_PRIVATE_BUCKET="skp-documents"
+SKP_PUBLIC_BUCKET="skp-public-documents"
 
 echo "Waiting for MinIO at ${ENDPOINT} ..."
 i=0
@@ -70,6 +72,20 @@ create_app_user \
   "${SIPERBOOK_SECRET_KEY}" \
   "siperbook-rw" \
   "/policies/siperbook-rw.json"
+
+echo "Creating dpupk-skp buckets ..."
+mc mb --ignore-existing "${ALIAS}/${SKP_PRIVATE_BUCKET}"
+mc mb --ignore-existing "${ALIAS}/${SKP_PUBLIC_BUCKET}"
+
+echo "Applying anonymous public-read on ${SKP_PUBLIC_BUCKET} ..."
+mc anonymous set download "${ALIAS}/${SKP_PUBLIC_BUCKET}" || true
+
+echo "Creating dpupk-skp application user ..."
+create_app_user \
+  "${SKP_ACCESS_KEY}" \
+  "${SKP_SECRET_KEY}" \
+  "skp-rw" \
+  "/policies/skp-rw.json"
 
 echo "Init complete."
 mc ls "${ALIAS}"

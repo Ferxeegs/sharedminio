@@ -1,6 +1,6 @@
 # Shared MinIO
 
-Shared object storage berbasis MinIO untuk aplikasi **purchasing-go** dan **siperbook**. Stack: Docker Compose, Prometheus, dan Grafana. Aplikasi mengakses S3 API MinIO secara langsung (tanpa Nginx).
+Shared object storage berbasis MinIO untuk aplikasi **purchasing-go**, **siperbook**, dan **dpupk-skp**. Stack: Docker Compose, Prometheus, dan Grafana. Aplikasi mengakses S3 API MinIO secara langsung (tanpa Nginx).
 
 ## Struktur
 
@@ -53,6 +53,15 @@ Kredensial app: `PURCHASING_GO_ACCESS_KEY` / `PURCHASING_GO_SECRET_KEY`
 
 Kredensial app: `SIPERBOOK_ACCESS_KEY` / `SIPERBOOK_SECRET_KEY`
 
+### dpupk-skp
+
+| Bucket | Akses |
+|---|---|
+| `skp-documents` | Privat (kredensial / presigned URL) |
+| `skp-public-documents` | Publik (anonymous download) |
+
+Kredensial app: `SKP_ACCESS_KEY` / `SKP_SECRET_KEY`
+
 Dari container di network `app-bridge`: `http://minio:9000`
 
 ## Dokumen
@@ -64,6 +73,7 @@ Dari container di network `app-bridge`: `http://minio:9000`
 - `docs/DEPLOYMENT.md`
 - `docs/INTEGRATION-GO.md`
 - `docs/INTEGRATION-SIPERBOOK.md`
+- `docs/INTEGRATION-SKP.md`
 - `docs/MONITORING.md`
 - `docs/BACKUP-RESTORE.md`
 - `docs/RUNBOOK.md`
