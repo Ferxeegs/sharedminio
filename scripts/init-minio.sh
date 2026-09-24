@@ -10,6 +10,25 @@ SIPERBOOK_PUBLIC_BUCKET="siperbook-public-documents"
 SKP_PRIVATE_BUCKET="skp-documents"
 SKP_PUBLIC_BUCKET="skp-public-documents"
 
+require_env() {
+  var_name="$1"
+  eval "var_value=\${${var_name}:-}"
+  if [ -z "${var_value}" ]; then
+    echo "Missing required env: ${var_name}"
+    echo "Add it to .env (see .env.example) then recreate minio-init."
+    exit 1
+  fi
+}
+
+require_env MINIO_ROOT_USER
+require_env MINIO_ROOT_PASSWORD
+require_env PURCHASING_GO_ACCESS_KEY
+require_env PURCHASING_GO_SECRET_KEY
+require_env SIPERBOOK_ACCESS_KEY
+require_env SIPERBOOK_SECRET_KEY
+require_env SKP_ACCESS_KEY
+require_env SKP_SECRET_KEY
+
 echo "Waiting for MinIO at ${ENDPOINT} ..."
 i=0
 until mc alias set "${ALIAS}" "${ENDPOINT}" "${MINIO_ROOT_USER}" "${MINIO_ROOT_PASSWORD}" >/dev/null 2>&1; do
